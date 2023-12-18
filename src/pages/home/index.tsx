@@ -11,6 +11,16 @@ import Forecasting from './forecasting';
 
 
 const Home = () => {
+  // Check WeatherBit API key
+  if (!process.env.REACT_APP_API_KEY_WeatherBit2 || process.env.REACT_APP_API_KEY_WeatherBit2 === "") {
+    throw new Error("WeatherBit API key is missing or empty. Please provide a valid API key.");
+  }
+
+  // Check ipdata API key
+  if (!process.env.REACT_APP_API_KEY_ipdata2 || process.env.REACT_APP_API_KEY_ipdata2 === "") {
+    throw new Error("ipdata API key is missing or empty. Please provide a valid API key.");
+  }
+
   return <>
   <CurrentWeather />
   <Forecasting />

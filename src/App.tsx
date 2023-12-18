@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import './App.css';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import HomeScreen from './pages/home';
 import History from './pages/history';
 import Sidebar from './components/sidebar';
@@ -8,7 +8,6 @@ import { ErrorBoundary } from 'react-error-boundary';
 import ErrorFallback from './components/handler';
 
 function App() {
-
 
   useEffect(() => {
     // Get user's location
@@ -22,7 +21,7 @@ function App() {
         (error) => {
           console.error('Error getting location:', error);
           // Fallback to IP-based location
-          fetch('https://ipapi.co/json/')
+          fetch('https://ipapi.co/8.8.8.8/json/ ')
             .then((response) => response.json())
             .then((data) => {
               const { latitude, longitude } = data;
@@ -43,6 +42,7 @@ function App() {
   //   throw new Error('This is a test error');
   // };
 
+
   return (
     <div className="App">
       <ErrorBoundary FallbackComponent={ErrorFallback}>
@@ -53,6 +53,7 @@ function App() {
 
               <Route path="/history" element={<History />} />
               <Route path="/" element={<HomeScreen />}>
+              <Route path="*" element={<Navigate to="/" />} />
             </Route>
           </Routes>
         </div>
