@@ -1,18 +1,26 @@
-import React from 'react';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import React, { useState } from 'react';
 import Card from '../../components/card';
 import Button from '../../components/button';
 import Divider from '../../components/divider';
 import styled from 'styled-components';
 import { SlLocationPin } from "react-icons/sl";
 import Row from '../../components/common/row';
+import { useAppSelector } from '../../app/hooks';
+import { selectUserLocation } from '../../store/userLocationSlice';
+import { Clock } from '../../components/common/clock';
+import moment from 'moment-timezone';
 
 const CurrentWeather = () => {
+  const [currentTime, setCurrentTime] = useState('');
+  const { timeZone } = useAppSelector(selectUserLocation);
+
   return <>
   <Card>
     <Box>
       <Row><SlLocationPin />Tehran</Row>
-      <h4>10:20 pm</h4>
-      <p>20 jun 2023</p>
+      <Clock timezone={timeZone} />
+      <p>{moment().tz(timeZone).format('DD MMM YYYY')}</p>
       <Button onClick={()=> console.log('click')}>Refresh</Button>
     </Box>
     <Divider/>

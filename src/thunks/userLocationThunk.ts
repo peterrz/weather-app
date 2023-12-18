@@ -1,35 +1,50 @@
-import { setUserLocation, setLoading, setError } from '../store/userLocationSlice';
-import  {AppThunk}  from '../app/store';
+import { createAsyncThunk } from '@reduxjs/toolkit';
+// import moment from 'moment-timezone';
 
-export const fetchUserLocation: AppThunk = () => async (dispatch: (arg0: { payload: { latitude: number; longitude: number; } | Error | undefined; type: "userLocation/setLoading" | "userLocation/setError" | "userLocation/setUserLocation"; }) => void) => {
-  dispatch(setLoading());
-  try {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          dispatch(setUserLocation({ latitude, longitude }));
-        },
-        async (error) => {
-          console.error('Error getting location:', error);
-          try {
-            const response = await fetch('https://ipapi.co/8.8.8.8/json/');
-            const data = await response.json();
-            const { latitude, longitude } = data;
-            dispatch(setUserLocation({ latitude, longitude }));
-          } catch (fallbackError) {
-            console.error('Error getting fallback location:', fallbackError);
-            dispatch(setError(fallbackError as Error));
+// Define the thunk using createAsyncThunk
+export const fetchUserLocation = createAsyncThunk(
+  'userLocation/fetchUserLocation',
+  async () => {
+    try {
+      return new Promise<{ latitude: number; longitude: number, timeZone: string }>( (resolve, reject) => {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              const { latitude, longitude } = position.coords;
+              const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+              resolve({ latitude, longitude, timeZone });
+            },
+            async (error) => {
+              console.error('Error getting location:', error);
+              try {
+                const response = await fetch(`https://api.ipdata.co?api-key=${process.env.REACT_APP_API_KEY_ipdata}`);
+                const data = await response.json();
+                const { latitude, longitude, time_zone} = data;
+                resolve({ latitude, longitude, timeZone: time_zone.name});
+              } catch (fallbackError) {
+                console.error('Error getting fallback location:', fallbackError);
+                reject(fallbackError as Error);
+              }
+            },
+            { enableHighAccuracy: true }
+          );
+        } else {
+          async () => {
+            try {
+              const response = await fetch(`https://api.ipdata.co?api-key=${process.env.REACT_APP_API_KEY_ipdata}`);
+              const data = await response.json();
+              const { latitude, longitude, time_zone} = data;
+              resolve({ latitude, longitude, timeZone: time_zone.name});
+            } catch (fallbackError) {
+              console.error('Error getting fallback location:', fallbackError);
+              reject(fallbackError as Error);
+            }
           }
-        },
-        { enableHighAccuracy: true }
-      );
-    } else {
-      console.error('Geolocation is not supported by this browser.');
-      dispatch(setError(new Error('Geolocation is not supported by this browser.')));
+        }
+      });
+    } catch (error) {
+      console.error('Error getting location:', error);
+      throw error;
     }
-  } catch (error) {
-    console.error('Error getting location:', error);
-    dispatch(setError(error as Error));
   }
-};
+);

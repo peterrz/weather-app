@@ -11,13 +11,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setUserLocation, setLoading, setError, selectUserLocation } from './store/userLocationSlice';
 import Loading from './components/loading';
 import Row from './components/common/row';
+import { fetchUserLocation } from './thunks/userLocationThunk';
+import { useAppSelector, useAppDispatch } from "./app/hooks";
+
 
 function App() {
 
-  const dispatch = useDispatch();
-  const { latitude, longitude, loading, error } = useSelector(selectUserLocation);
+  const dispatch = useAppDispatch();
+  const { latitude, longitude, loading, error } = useAppSelector(selectUserLocation);
 
-
+  useEffect(() => {
+    dispatch(fetchUserLocation());
+  }, [dispatch]);
   // useEffect(() => {
   //   // Get user's location
   //   if (navigator.geolocation) {

@@ -1,17 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
 
 interface ErrorFallbackProps {
   error: Error;
 }
 
 const ErrorFallback: React.FC<ErrorFallbackProps> = ({ error }) => {
-  const navigate = useNavigate();
 
   const handleTryAgain = () => {
-    // Navigate to the home route or any other route you desire
-    navigate('/');
+    // reload the page
+    window.location.reload();
   };
 
   return (

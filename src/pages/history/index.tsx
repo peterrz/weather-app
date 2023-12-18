@@ -98,9 +98,9 @@ export default History;
 
 const DateInput = styled.input`
   padding-inline: 1rem;
-  font-size: 1rem;
+  font-size: 1.1rem;
   border-radius: 10px;
-  height: 42px;
+  height: 38px;
 border: 1px solid #222831;
 background: #FBFFFF; 
 `;
