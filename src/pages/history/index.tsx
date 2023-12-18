@@ -5,8 +5,11 @@ import Button from '../../components/button';
 import Card from '../../components/card';
 import Loading from '../../components/loading';
 import Divider from '../../components/divider';
-// import { FaEdit, FaPrint, FaAddressCard } from 'react-icons/fa';
+import Row from '../../components/common/row';
+import Col from '../../components/common/col';
+import Item from '../../components/common/item';
 interface ForecastItem {
+    src: string;
     temperature: string;
     day: string;
     date: string;
@@ -20,20 +23,30 @@ const History = () => {
   const [data, setData] = useState<ForecastItem[]>([]);
 
   const forecastItems = [
-    { temperature: '22', day: 'Wed', date: '7 Jun' },
-    { temperature: '22', day: 'Wed', date: '7 Jun' },
-    { temperature: '22', day: 'Wed', date: '7 Jun' },
-    { temperature: '22', day: 'Wed', date: '7 Jun' },
-    { temperature: '22', day: 'Wed', date: '7 Jun' },
-    { temperature: '22', day: 'Wed', date: '7 Jun' },
-    { temperature: '22', day: 'Wed', date: '7 Jun' },
-    { temperature: '22', day: 'Wed', date: '7 Jun' },
-    { temperature: '22', day: 'Wed', date: '7 Jun' },
-    { temperature: '22', day: 'Wed', date: '7 Jun' },
-    { temperature: '22', day: 'Wed', date: '7 Jun' },
-    { temperature: '22', day: 'Wed', date: '7 Jun' },
-    { temperature: '22', day: 'Wed', date: '7 Jun' },
-    { temperature: '22', day: 'Wed', date: '7 Jun' },
+    { src: "https://cdn.weatherbit.io/static/img/icons/c03d.png", 
+    temperature: '22', day: 'Wed', date: '7 Jun' },
+    { src: "https://cdn.weatherbit.io/static/img/icons/c01d.png", 
+    temperature: '22', day: 'Wed', date: '7 Jun' },
+    { src: "https://cdn.weatherbit.io/static/img/icons/c01d.png", 
+    temperature: '22', day: 'Wed', date: '7 Jun' },
+    { src: "https://cdn.weatherbit.io/static/img/icons/c02d.png", 
+    temperature: '22', day: 'Wed', date: '7 Jun' },
+    { src: "https://cdn.weatherbit.io/static/img/icons/c02d.png", 
+    temperature: '22', day: 'Wed', date: '7 Jun' },
+    { src: "https://cdn.weatherbit.io/static/img/icons/c02d.png", 
+    temperature: '22', day: 'Wed', date: '7 Jun' },
+    { src: "https://cdn.weatherbit.io/static/img/icons/c03d.png", 
+    temperature: '22', day: 'Wed', date: '7 Jun' },
+    { src: "https://cdn.weatherbit.io/static/img/icons/u00d.png", 
+    temperature: '22', day: 'Wed', date: '5 Jun' },
+    { src: "https://cdn.weatherbit.io/static/img/icons/u00d.png", 
+    temperature: '22', day: 'Wed', date: '5 Jun' },
+    { src: "https://cdn.weatherbit.io/static/img/icons/u00d.png", 
+    temperature: '22', day: 'Wed', date: '5 Jun' },
+    { src: "https://cdn.weatherbit.io/static/img/icons/u00d.png", 
+    temperature: '22', day: 'Wed', date: '5 Jun' },
+    { src: "https://cdn.weatherbit.io/static/img/icons/u00d.png", 
+    temperature: '22', day: 'Wed', date: '5 Jun' },
 
   ];
 
@@ -72,16 +85,7 @@ const History = () => {
     {data.length && (
         <Card wrap={true}>
           {data.map((item, index) => (<>
-            <ForecastItem key={index}>
-              <Img
-                loading="lazy"
-                src="https://cdn.builder.io/api/v1/image/assets/TEMP/dab3b778ab2e96f807da45b3115a790e1419940d1ea731ac1160a006cb8099cd?"
-              />
-              <Temperature>{item.temperature} &#8451;</Temperature>
-              <Day>{item.day}</Day>
-              <Date>{item.date}</Date>
-              
-            </ForecastItem>
+            <Item src={item.src} temperature={item.temperature} day={item.day} date={item.date} />
             {index < data.length - 1 && <Divider />}
             </>
           ))}
@@ -92,27 +96,6 @@ const History = () => {
 
 export default History;
 
-const Col = styled.div`
-display: flex;
-flex-direction: column;
-justify-content: center;
-width: 100%;
-gap: 2rem;
-`;
-
-const Row = styled.div`
-display: flex;
-flex-direction:row;
-align-items: center;
-justify-content: space-evenly;
-gap: 1rem;
-color: #fff;
-font-size: 1.3rem;
-@media screen and (max-width: 1340px) {
-  flex-direction: column;
-}
-`;
-
 const DateInput = styled.input`
   padding-inline: 1rem;
   font-size: 1rem;
@@ -120,45 +103,4 @@ const DateInput = styled.input`
   height: 42px;
 border: 1px solid #222831;
 background: #FBFFFF; 
-`;
-
-const ForecastItem = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding: 0 20px;
-`;
-
-const Img = styled.img`
-  aspect-ratio: 1.05;
-  object-fit: contain;
-  object-position: center;
-  width: 100%;
-  overflow: hidden;
-`;
-
-const Temperature = styled.div`
-  color: #fff;
-  text-align: center;
-  margin-top: 1.5rem;
-  width: 100%;
-  font-size: 1.3rem;
-  font-weight: 700;
-`;
-
-const Day = styled.div`
-  color: #fff;
-  text-align: center;
-  margin-top: 1.5rem;
-  width: 100%;
-  font-size: 1rem;
-  font-weight: 500;
-`;
-
-const Date = styled.div`
-  color: #fff;
-  text-align: center;
-  margin-top: 5px;
-  width: 100%;
-  font-size: 1rem;
-  font-weight: 500;
 `;

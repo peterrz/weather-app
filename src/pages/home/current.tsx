@@ -4,7 +4,7 @@ import Button from '../../components/button';
 import Divider from '../../components/divider';
 import styled from 'styled-components';
 import { SlLocationPin } from "react-icons/sl";
-
+import Row from '../../components/common/row';
 
 const CurrentWeather = () => {
   return <>
@@ -41,16 +41,6 @@ const Box = styled.div`
   align-items: center;
   gap: 0.8rem;
 `;
-
-const Row = styled.div`
-display: flex;
-flex-direction:row;
-align-items: center;
-justify-content: center;
-gap: 0.5rem;
-color: #fff;
-font-size: 1.3rem;`;
-
 
 const Img = styled.img`
   width: 150px; 
