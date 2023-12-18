@@ -1,9 +1,21 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react';
-// import styled from 'styled-components';
-// import { FaEdit, FaPrint, FaAddressCard } from 'react-icons/fa';
+import Loading from '../../components/loading';
+import Card from '../../components/card';
+import Button from '../../components/button';
+import Divider from '../../components/divider';
+import styled from 'styled-components';
+import { SlLocationPin } from "react-icons/sl";
+import CurrentWeather from './current';
+import Forecasting from './forecasting';
 
-const index = () => {
-  return <>home</>;
+
+const Home = () => {
+  return <>
+  <CurrentWeather />
+  <Forecasting />
+ </>;
 };
 
-export default index;
+export default Home;
+

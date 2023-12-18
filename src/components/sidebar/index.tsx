@@ -68,9 +68,8 @@ export default Sidebar;
 // Styled Components
 const SidebarContainer = styled.div`
   background: #222831;
-  border-radius: 1rem;
+  border-radius: 10px;
   width: 16rem;
-  height: 42rem;
   display: block;
   padding: 1.5rem;
 
@@ -155,4 +154,5 @@ const SidebarMenu = styled.div<{ close: boolean }>`
   transition: 0.6s;
   border: 1px solid #3f4047;
   padding: 0.5rem;
+  z-index: 2;
 `;
