@@ -34,8 +34,8 @@ const ErrorContainer = styled.div`
   width: 360px;
   display: flex;
   flex-direction: column;
-  word-wrap: break-word; 
-  white-space: pre-wrap; 
+  word-wrap: break-word;
+  white-space: pre-wrap;
 `;
 
 const Button = styled.button`

@@ -26,9 +26,9 @@ const Forecasting = () => {
       </More>
 
       {isExpanded && (
-        <Card>
+        <Card wrap={'nowrap'}>
           {weatherLoading ? (
-              <Loading />
+            <Loading />
           ) : (
             <>
               {forecasts.map((item, index) => (

@@ -6,7 +6,11 @@ interface LoadingProps {
 }
 
 const Loading: React.FC<LoadingProps> = ({ size }) => {
-  return <LoadingWrapper> <StyledLoader size={size ?? 24} /> </LoadingWrapper>;
+  return (
+    <LoadingWrapper>
+      <StyledLoader size={size ?? 24} />{' '}
+    </LoadingWrapper>
+  );
 };
 
 export default Loading;

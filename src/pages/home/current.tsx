@@ -1,12 +1,10 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState } from 'react';
+import React from 'react';
 import Card from '../../components/card';
 import Button from '../../components/button';
 import Divider from '../../components/divider';
 import styled from 'styled-components';
 import { SlLocationPin } from 'react-icons/sl';
 import Row from '../../components/common/row';
-import Col from '../../components/common/col';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { selectUserLocation } from '../../store/userLocationSlice';
 import { Clock } from '../../components/common/clock';
@@ -30,23 +28,22 @@ const CurrentWeather = () => {
     precipitation,
     weatherLoading,
   } = useAppSelector(selectWeather);
-  const { latitude, longitude, loading } =
-  useAppSelector(selectUserLocation);
-  const { weatherLoading : ForecastLoading } =
-  useAppSelector(selectForecastWeather);
-  
+  const { latitude, longitude } = useAppSelector(selectUserLocation);
+  const { weatherLoading: ForecastLoading } = useAppSelector(
+    selectForecastWeather
+  );
+
   const dispatch = useAppDispatch();
 
-  
   const handleButtonClick = () => {
     if (latitude && longitude && !weatherLoading && !ForecastLoading) {
       dispatch(fetchWeatherData({ latitude, longitude }));
       dispatch(fetchForecastData({ latitude, longitude }));
     }
-  }
+  };
   return (
     <>
-      <Card>
+      <Card wrap={'nowrap'}>
         <Box>
           <Row>
             <SlLocationPin />
@@ -58,7 +55,7 @@ const CurrentWeather = () => {
         </Box>
         <Divider />
         {weatherLoading ? (
-            <Loading size={32} />
+          <Loading size={32} />
         ) : (
           <>
             <Box>
@@ -96,4 +93,3 @@ const Img = styled.img`
   height: 150px;
   margin: -1rem;
 `;
-

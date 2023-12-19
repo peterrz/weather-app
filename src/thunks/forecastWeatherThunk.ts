@@ -23,7 +23,7 @@ export const fetchForecastData = createAsyncThunk(
     const forecasts = responseData.data.map((forecastItem: any) => ({
       icon: forecastItem.weather.icon,
       temp: forecastItem.temp,
-      date: forecastItem.datetime, 
+      date: forecastItem.datetime,
     }));
 
     return forecasts;

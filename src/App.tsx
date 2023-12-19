@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect } from 'react';
 import './App.css';
 import { Routes, Route, Navigate } from 'react-router-dom';
@@ -7,11 +6,8 @@ import History from './pages/history';
 import Sidebar from './components/sidebar';
 import { ErrorBoundary } from 'react-error-boundary';
 import ErrorFallback from './components/handler';
-import {
-  selectUserLocation,
-} from './store/userLocationSlice';
+import { selectUserLocation } from './store/userLocationSlice';
 import Loading from './components/loading';
-import Row from './components/common/row';
 import { fetchUserLocation } from './thunks/userLocationThunk';
 import { fetchWeatherData } from './thunks/currentWeatherThunk';
 import { fetchForecastData } from './thunks/forecastWeatherThunk';
@@ -19,8 +15,7 @@ import { useAppSelector, useAppDispatch } from './app/hooks';
 
 function App() {
   const dispatch = useAppDispatch();
-  const { latitude, longitude, loading } =
-    useAppSelector(selectUserLocation);
+  const { latitude, longitude, loading } = useAppSelector(selectUserLocation);
 
   useEffect(() => {
     if (loading) {
@@ -42,9 +37,7 @@ function App() {
         <Sidebar />
         <div className="main-container">
           {loading ? (
-
-              <Loading size={44} />
-
+            <Loading size={44} />
           ) : (
             <Routes>
               <Route path="/history" element={<History />} />

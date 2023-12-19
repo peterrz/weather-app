@@ -2,7 +2,7 @@ import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import userLocationReducer from '../store/userLocationSlice';
 import currentWeatherReducer from '../store/currentWeatherSlice';
 import forecastWeatherReducer from '../store/forecastWeatherSlice';
-import historyWeatherReducer from '../store/historyWeatherSlice'
+import historyWeatherReducer from '../store/historyWeatherSlice';
 const store = configureStore({
   reducer: {
     userLocation: userLocationReducer,

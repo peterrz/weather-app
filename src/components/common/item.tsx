@@ -49,7 +49,7 @@ const Date = styled.div`
 
 const Item: React.FC<ForecastProps> = ({ src, temperature, day, date }) => (
   <ForecastItem>
-   {src ? <Img loading="lazy" src={src} /> : null}
+    {src ? <Img loading="lazy" src={src} /> : null}
     <Temperature>{temperature} &#8451;</Temperature>
     <Day>{day}</Day>
     <Date>{date}</Date>

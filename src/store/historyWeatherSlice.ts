@@ -47,10 +47,8 @@ const historyWeatherSlice = createSlice({
   },
 });
 
-export const {
-  setHistoryWeatherError,
-  setHistoryWeatherLoading,
-} = historyWeatherSlice.actions;
+export const { setHistoryWeatherError, setHistoryWeatherLoading } =
+  historyWeatherSlice.actions;
 
 export const selectHistoryWeather = (state: {
   historyWeather: historyWeatherState;

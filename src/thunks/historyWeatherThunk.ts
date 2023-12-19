@@ -24,7 +24,7 @@ export const fetchHistoryData = createAsyncThunk(
     // Map the data here and return the relevant history items
     const history = responseData.data.map((item: any) => ({
       temp: item.temp,
-      date: item.datetime, 
+      date: item.datetime,
     }));
 
     return history;
