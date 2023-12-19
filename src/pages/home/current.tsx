@@ -4,37 +4,78 @@ import Card from '../../components/card';
 import Button from '../../components/button';
 import Divider from '../../components/divider';
 import styled from 'styled-components';
-import { SlLocationPin } from "react-icons/sl";
+import { SlLocationPin } from 'react-icons/sl';
 import Row from '../../components/common/row';
-import { useAppSelector } from '../../app/hooks';
+import Col from '../../components/common/col';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { selectUserLocation } from '../../store/userLocationSlice';
 import { Clock } from '../../components/common/clock';
 import moment from 'moment-timezone';
+import { selectWeather } from '../../store/currentWeatherSlice';
+import Loading from '../../components/loading';
+import { fetchForecastData } from '../../thunks/forecastWeatherThunk';
+import { fetchWeatherData } from '../../thunks/currentWeatherThunk';
+import { selectForecastWeather } from '../../store/forecastWeatherSlice';
+//urls icon
+const PngUrl = 'https://cdn.weatherbit.io/static/img/icons/';
 
 const CurrentWeather = () => {
-  const [currentTime, setCurrentTime] = useState('');
   const { timeZone } = useAppSelector(selectUserLocation);
+  const {
+    icon,
+    description,
+    temp,
+    windSpeed,
+    clouds,
+    precipitation,
+    weatherLoading,
+  } = useAppSelector(selectWeather);
+  const { latitude, longitude, loading } =
+  useAppSelector(selectUserLocation);
+  const { weatherLoading : ForecastLoading } =
+  useAppSelector(selectForecastWeather);
+  
+  const dispatch = useAppDispatch();
 
-  return <>
-  <Card>
-    <Box>
-      <Row><SlLocationPin />Tehran</Row>
-      <Clock timezone={timeZone} />
-      <p>{moment().tz(timeZone).format('DD MMM YYYY')}</p>
-      <Button onClick={()=> console.log('click')}>Refresh</Button>
-    </Box>
-    <Divider/>
-    <Box><Img  loading="lazy" src='https://cdn.weatherbit.io/static/img/icons/c02d.png'/>
-    <p>Rain</p>
-    </Box>
-    <Box>
-      <h4>23 &#8451;</h4>
-      <span>Wind speed: 53 m/s</span>
-      <span>Cloud coverage: 5%</span>
-      <span>Precipitation rate: 5 mm/hh</span>
-    </Box>
-    </Card>
-  </>;
+  
+  const handleButtonClick = () => {
+    if (latitude && longitude && !weatherLoading && !ForecastLoading) {
+      dispatch(fetchWeatherData({ latitude, longitude }));
+      dispatch(fetchForecastData({ latitude, longitude }));
+    }
+  }
+  return (
+    <>
+      <Card>
+        <Box>
+          <Row>
+            <SlLocationPin />
+            Tehran
+          </Row>
+          <Clock timezone={timeZone} />
+          <p>{moment().tz(timeZone).format('DD MMM YYYY')}</p>
+          <Button onClick={handleButtonClick}>Refresh</Button>
+        </Box>
+        <Divider />
+        {weatherLoading ? (
+            <Loading size={32} />
+        ) : (
+          <>
+            <Box>
+              <Img loading="lazy" src={`${PngUrl}/${icon}.png`} />
+              <p>{description}</p>
+            </Box>
+            <Box>
+              <h4>{temp} &#8451;</h4>
+              <span>Wind speed: {windSpeed} m/s</span>
+              <span>Cloud coverage: {clouds}%</span>
+              <span>Precipitation rate: {precipitation} mm/hh</span>
+            </Box>
+          </>
+        )}
+      </Card>
+    </>
+  );
 };
 
 export default CurrentWeather;
@@ -51,7 +92,8 @@ const Box = styled.div`
 `;
 
 const Img = styled.img`
-  width: 150px; 
+  width: 150px;
   height: 150px;
   margin: -1rem;
 `;
+

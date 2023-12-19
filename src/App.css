@@ -15,15 +15,15 @@
   overflow-y: auto;
   background: #222831;
   border-radius: 10px;
-  padding: 2rem 1rem;
+  padding: 2rem 1.5rem;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   gap: 3rem;
 
   @media (max-width: 1340px) {
-    width: 100%; 
-    height: auto;   
+    width: 100%;
+    height: auto;
   }
 
   &::-webkit-scrollbar {
@@ -43,4 +43,3 @@
     background: none;
   }
 }
-

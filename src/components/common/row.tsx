@@ -12,15 +12,14 @@ const Row: React.FC<Props> = ({ children }) => {
 export default Row;
 
 const Wrapper = styled.div`
-display: flex;
-flex-direction:row;
-align-items: center;
-justify-content: space-evenly;
-gap: 1rem;
-color: #fff;
-font-size: 1.3rem;
-@media screen and (max-width: 1340px) {
-  flex-direction: column;
-}
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+  gap: 1rem;
+  color: #fff;
+  font-size: 1.3rem;
+  @media screen and (max-width: 1340px) {
+    flex-direction: column;
+  }
 `;
-

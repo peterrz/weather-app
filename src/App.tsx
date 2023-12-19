@@ -7,72 +7,54 @@ import History from './pages/history';
 import Sidebar from './components/sidebar';
 import { ErrorBoundary } from 'react-error-boundary';
 import ErrorFallback from './components/handler';
-import { useDispatch, useSelector } from 'react-redux';
-import { setUserLocation, setLoading, setError, selectUserLocation } from './store/userLocationSlice';
+import {
+  selectUserLocation,
+} from './store/userLocationSlice';
 import Loading from './components/loading';
 import Row from './components/common/row';
 import { fetchUserLocation } from './thunks/userLocationThunk';
-import { useAppSelector, useAppDispatch } from "./app/hooks";
-
+import { fetchWeatherData } from './thunks/currentWeatherThunk';
+import { fetchForecastData } from './thunks/forecastWeatherThunk';
+import { useAppSelector, useAppDispatch } from './app/hooks';
 
 function App() {
-
   const dispatch = useAppDispatch();
-  const { latitude, longitude, loading, error } = useAppSelector(selectUserLocation);
+  const { latitude, longitude, loading } =
+    useAppSelector(selectUserLocation);
 
   useEffect(() => {
-    dispatch(fetchUserLocation());
-  }, [dispatch]);
-  // useEffect(() => {
-  //   // Get user's location
-  //   if (navigator.geolocation) {
-  //     navigator.geolocation.getCurrentPosition(
-  //       (position) => {
-  //         console.log(position);
-  //         const { latitude, longitude } = position.coords;
-  //         console.log(`User's location: Latitude ${latitude}, Longitude ${longitude}`);
-  //       },
-  //       (error) => {
-  //         console.error('Error getting location:', error);
-  //         // Fallback to IP-based location
-  //         fetch('https://ipapi.co/8.8.8.8/json/ ')
-  //           .then((response) => response.json())
-  //           .then((data) => {
-  //             const { latitude, longitude } = data;
-  //             console.log(`Fallback location (IP-based): Latitude ${latitude}, Longitude ${longitude}`);
-  //           })
-  //           .catch((fallbackError) => {
-  //             console.error('Error getting fallback location:', fallbackError);
-  //           });
-  //       },
-  //       { enableHighAccuracy: true }
-  //     );
-  //   } else {
-  //     console.error('Geolocation is not supported by this browser.');
-  //   }
-  // }, []); // Empty dependency array to run the effect only once when the component mounts
+    if (loading) {
+      dispatch(fetchUserLocation());
+    }
+  }, []);
 
-  // const ComponentWithError = () => {
-  //   throw new Error('This is a test error');
-  // };
-
+  useEffect(() => {
+    if (latitude && longitude) {
+      dispatch(fetchWeatherData({ latitude, longitude }));
+      dispatch(fetchForecastData({ latitude, longitude }));
+    }
+  }, [latitude, longitude]);
 
   return (
     <div className="App">
       <ErrorBoundary FallbackComponent={ErrorFallback}>
-      {/* <ComponentWithError /> */}
-      <Sidebar />
-      <div className="main-container">
-        {loading ?  ( <Row><Loading size={44}/></Row>) : 
-          <Routes>
+        {/* <ComponentWithError /> */}
+        <Sidebar />
+        <div className="main-container">
+          {loading ? (
+
+              <Loading size={44} />
+
+          ) : (
+            <Routes>
               <Route path="/history" element={<History />} />
               <Route path="/" element={<HomeScreen />}>
-              <Route path="*" element={<Navigate to="/" />} />
-            </Route>
-          </Routes>
-          }
+                <Route path="*" element={<Navigate to="/" />} />
+              </Route>
+            </Routes>
+          )}
         </div>
-        </ErrorBoundary>
+      </ErrorBoundary>
     </div>
   );
 }

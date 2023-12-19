@@ -4,7 +4,7 @@ interface Props {
   timezone: string;
 }
 
- export const Clock: React.FC<Props> = ({ timezone }) => {
+export const Clock: React.FC<Props> = ({ timezone }) => {
   const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {

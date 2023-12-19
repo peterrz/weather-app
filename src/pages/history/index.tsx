@@ -8,54 +8,35 @@ import Divider from '../../components/divider';
 import Row from '../../components/common/row';
 import Col from '../../components/common/col';
 import Item from '../../components/common/item';
-interface ForecastItem {
-    src: string;
-    temperature: string;
-    day: string;
-    date: string;
-}
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { selectHistoryWeather } from '../../store/historyWeatherSlice';
+import moment from 'moment';
+import { selectUserLocation } from '../../store/userLocationSlice';
+import { fetchHistoryData } from '../../thunks/historyWeatherThunk';
 
 const History = () => {
+  const [isExpanded, setExpanded] = useState(false);
+  const [startDate, setStartDate] = useState(moment().format('YYYY-MM-DD'));
+  const [endDate, setEndDate] = useState(moment().add(7, 'days').format('YYYY-MM-DD'));
 
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
-  const [loading, setLoading] = useState<boolean>(false);
-  const [data, setData] = useState<ForecastItem[]>([]);
+  const dispatch = useAppDispatch();
+  const { history, weatherLoading } = useAppSelector(selectHistoryWeather);
+  const { latitude, longitude } =
+  useAppSelector(selectUserLocation);
 
-  const forecastItems = [
-    { src: "https://cdn.weatherbit.io/static/img/icons/c03d.png", 
-    temperature: '22', day: 'Wed', date: '7 Jun' },
-    { src: "https://cdn.weatherbit.io/static/img/icons/c01d.png", 
-    temperature: '22', day: 'Wed', date: '7 Jun' },
-    { src: "https://cdn.weatherbit.io/static/img/icons/c01d.png", 
-    temperature: '22', day: 'Wed', date: '7 Jun' },
-    { src: "https://cdn.weatherbit.io/static/img/icons/c02d.png", 
-    temperature: '22', day: 'Wed', date: '7 Jun' },
-    { src: "https://cdn.weatherbit.io/static/img/icons/c02d.png", 
-    temperature: '22', day: 'Wed', date: '7 Jun' },
-    { src: "https://cdn.weatherbit.io/static/img/icons/c02d.png", 
-    temperature: '22', day: 'Wed', date: '7 Jun' },
-    { src: "https://cdn.weatherbit.io/static/img/icons/c03d.png", 
-    temperature: '22', day: 'Wed', date: '7 Jun' },
-    { src: "https://cdn.weatherbit.io/static/img/icons/u00d.png", 
-    temperature: '22', day: 'Wed', date: '5 Jun' },
-    { src: "https://cdn.weatherbit.io/static/img/icons/u00d.png", 
-    temperature: '22', day: 'Wed', date: '5 Jun' },
-    { src: "https://cdn.weatherbit.io/static/img/icons/u00d.png", 
-    temperature: '22', day: 'Wed', date: '5 Jun' },
-    { src: "https://cdn.weatherbit.io/static/img/icons/u00d.png", 
-    temperature: '22', day: 'Wed', date: '5 Jun' },
-    { src: "https://cdn.weatherbit.io/static/img/icons/u00d.png", 
-    temperature: '22', day: 'Wed', date: '5 Jun' },
-
-  ];
-
+  
   const handleButtonClick = () => {
-    // Handle the button click event here
-    console.log('Start Date:', startDate);
-    console.log('End Date:', endDate);
-    setLoading(!loading);
-    setData(forecastItems);
+    setExpanded(true);
+
+    if(weatherLoading) return;
+
+    if(!startDate && !endDate){
+      throw new Error(`please set date`);
+    }
+    if(latitude && longitude){
+      dispatch(fetchHistoryData({ latitude, longitude, startDate, endDate}));
+    }
+    else throw new Error(`Error getting location`);
   };
 
   return <Col>
@@ -78,19 +59,20 @@ const History = () => {
       </Row>
       <Button onClick={handleButtonClick}>View</Button>
     </Row>
-    {loading && <Row>
+     {isExpanded ? ( <>{weatherLoading ? <Row>
       <Loading />
-    </Row>}
-    
-    {data.length && (
-        <Card wrap={true}>
-          {data.map((item, index) => (<>
-            <Item src={item.src} temperature={item.temperature} day={item.day} date={item.date} />
-            {index < data.length - 1 && <Divider />}
+    </Row> : <>
+    <Card wrap={true}>
+          {history.map((item, index) => (<>
+            <Item temperature={item.temp}                     
+            day={moment(item.date).format('ddd')}
+            date={moment(item.date).format('DD MMM')} />
+            {index < history.length - 1 && <Divider />}
             </>
           ))}
         </Card>
-      )}
+    
+    </> }</> ) : null}
   </Col>;
 };
 

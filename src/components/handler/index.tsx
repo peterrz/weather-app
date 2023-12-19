@@ -6,7 +6,6 @@ interface ErrorFallbackProps {
 }
 
 const ErrorFallback: React.FC<ErrorFallbackProps> = ({ error }) => {
-
   const handleTryAgain = () => {
     // reload the page
     window.location.reload();
@@ -35,13 +34,15 @@ const ErrorContainer = styled.div`
   width: 360px;
   display: flex;
   flex-direction: column;
+  word-wrap: break-word; 
+  white-space: pre-wrap; 
 `;
 
 const Button = styled.button`
   color: #721c24;
   width: 120px;
-  height: 38px; 
-  border-radius: 10px; 
+  height: 38px;
+  border-radius: 10px;
   border: 1px solid #721c24;
   margin-top: 1rem;
   align-self: end;

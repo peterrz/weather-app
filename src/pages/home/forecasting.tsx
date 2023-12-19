@@ -1,55 +1,50 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { FaChevronDown  } from "react-icons/fa";
-import { SlLocationPin } from "react-icons/sl";
-
+import { FaChevronDown } from 'react-icons/fa';
 import Loading from '../../components/loading';
 import Card from '../../components/card';
-import Button from '../../components/button';
 import Divider from '../../components/divider';
 import Item from '../../components/common/item';
+import { useAppSelector } from '../../app/hooks';
+import { selectForecastWeather } from '../../store/forecastWeatherSlice';
+import moment from 'moment-timezone';
+
+//urls icon
+const PngUrl = 'https://cdn.weatherbit.io/static/img/icons/';
 
 const Forecasting = () => {
   const [isExpanded, setExpanded] = useState(false);
-
+  const { forecasts, weatherLoading } = useAppSelector(selectForecastWeather);
   const handleToggle = () => {
     setExpanded(!isExpanded);
   };
 
-  const forecastItems = [
-    { src: "https://cdn.weatherbit.io/static/img/icons/c03d.png", 
-    temperature: '22', day: 'Wed', date: '7 Jun' },
-    { src: "https://cdn.weatherbit.io/static/img/icons/c01d.png", 
-    temperature: '22', day: 'Wed', date: '7 Jun' },
-    { src: "https://cdn.weatherbit.io/static/img/icons/c01d.png", 
-    temperature: '22', day: 'Wed', date: '7 Jun' },
-    { src: "https://cdn.weatherbit.io/static/img/icons/c02d.png", 
-    temperature: '22', day: 'Wed', date: '7 Jun' },
-    { src: "https://cdn.weatherbit.io/static/img/icons/c02d.png", 
-    temperature: '22', day: 'Wed', date: '7 Jun' },
-    { src: "https://cdn.weatherbit.io/static/img/icons/c02d.png", 
-    temperature: '22', day: 'Wed', date: '7 Jun' },
-    { src: "https://cdn.weatherbit.io/static/img/icons/c03d.png", 
-    temperature: '22', day: 'Wed', date: '7 Jun' },
-    { src: "https://cdn.weatherbit.io/static/img/icons/u00d.png", 
-    temperature: '22', day: 'Wed', date: '5 Jun' },
-
-  ];
-
   return (
     <Container>
       <More onClick={handleToggle}>
-        Forecasting <FaChevronDown  style={{ marginTop: '5px' }} />
+        Forecasting <FaChevronDown style={{ marginTop: '5px' }} />
       </More>
 
       {isExpanded && (
         <Card>
-          {forecastItems.map((item, index) => (<>
-            <Item src={item.src} temperature={item.temperature} day={item.day} date={item.date} />
-            {index < forecastItems.length - 1 && <Divider />}
+          {weatherLoading ? (
+              <Loading />
+          ) : (
+            <>
+              {forecasts.map((item, index) => (
+                <>
+                  <Item
+                    key={index}
+                    src={`${PngUrl}/${item.icon}.png`}
+                    temperature={item.temp}
+                    day={moment(item.date).format('ddd')}
+                    date={moment(item.date).format('DD MMM')}
+                  />
+                  {index < forecasts.length - 1 && <Divider />}
+                </>
+              ))}
             </>
-          ))}
+          )}
         </Card>
       )}
     </Container>

@@ -1,4 +1,3 @@
-
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { fetchUserLocation } from '../thunks/userLocationThunk';
 
@@ -13,7 +12,7 @@ interface UserLocationState {
 const initialState: UserLocationState = {
   latitude: null,
   longitude: null,
-  loading: false,
+  loading: true,
   timeZone: 'Asia/Tehran',
   error: null,
 };
@@ -22,14 +21,21 @@ const userLocationSlice = createSlice({
   name: 'userLocation',
   initialState,
   reducers: {
-    setUserLocation: (state, action: PayloadAction<{ latitude: number; longitude: number, timeZone: string }>) => {
+    setUserLocation: (
+      state,
+      action: PayloadAction<{
+        latitude: number;
+        longitude: number;
+        timeZone: string;
+      }>
+    ) => {
       state.latitude = action.payload.latitude;
       state.longitude = action.payload.longitude;
       state.timeZone = action.payload.timeZone;
       state.loading = false;
       state.error = null;
     },
-    setLoading: (state) => {
+    setLoading: state => {
       state.loading = true;
     },
     setError: (state, action: PayloadAction<Error>) => {
@@ -38,8 +44,8 @@ const userLocationSlice = createSlice({
     },
   },
   // Add extra reducers to handle the asynchronous logic
-  extraReducers: (builder) => {
-    builder.addCase(fetchUserLocation.pending, (state) => {
+  extraReducers: builder => {
+    builder.addCase(fetchUserLocation.pending, state => {
       state.loading = true;
       state.error = null;
     });
@@ -57,6 +63,9 @@ const userLocationSlice = createSlice({
   },
 });
 
-export const { setUserLocation, setLoading, setError } = userLocationSlice.actions;
-export const selectUserLocation = (state: { userLocation: UserLocationState }) => state.userLocation;
+export const { setUserLocation, setLoading, setError } =
+  userLocationSlice.actions;
+export const selectUserLocation = (state: {
+  userLocation: UserLocationState;
+}) => state.userLocation;
 export default userLocationSlice.reducer;
