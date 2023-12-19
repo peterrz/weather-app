@@ -2,7 +2,7 @@
 
 Welcome to WeatherBit, a weather application built using Create React App and Redux Thunk for state management.
 
-![Screenshot](screenshot.png)
+![Screenshot](Screenshot.png)
 
 ## Getting Started
 
